@@ -32,7 +32,13 @@ const shiftSchema = new mongoose.Schema({
     },
     endTime: {
         type: Date,
-        required: true
+        required: true,
+        validate: {
+        validator: function (value) {
+            return value > this.startTime;
+        },
+        message: 'endTime must be later than startTime.'
+    }
 
     },
     location: {
@@ -51,12 +57,17 @@ const shiftSchema = new mongoose.Schema({
     },
     applicationDeadline: {
         type: Date,
-        required: true
+        required: true,
+        validate: {
+        validator: function (value) {
+            return value < this.startTime;
+        },
+        message: 'applicationDeadline must be before startTime.'
+    }
     },
     status: {
     type: String,
-    enum: ['open', 'filled', 'cancelled', 'completed'],
-    required: true,
+    enum: ['open', 'filled', 'cancelled', 'completed', 'closed ', 'in-progress'],
     default: 'open'
 },
 
