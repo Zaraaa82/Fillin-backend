@@ -15,20 +15,21 @@ const applicationSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'accepted', 'rejected', 'checked-in', 'completed', 'no-show'],
-        required: true,
+        enum: ['pending', 'accepted', 'rejected', 'withdrawn', 'completed', 'canceled'],
         default: 'pending'
     },
     attendanceStatus: {
         type: String,
-        enum: ['not-yet', 'present', 'absent'],
+        enum: ['not-applicable', 'pending', 'attended', 'missed'],
         default: 'not-yet'
     },
     rejectionReason: {
-        type: String
+        type: String,
+        trim: true
     },
     businessMessage: {
-        type: String
+        type: String,
+        trim: true
     }
 
 }, { timestamps: true })
