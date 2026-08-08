@@ -59,7 +59,10 @@ describe("Auth Routes", () => {
 
             await User.create({
                 username: "zaid",
-                hashedPassword: "hashedpassword"
+                hashedPassword: "hashedpassword",
+                email: "zaid@example.com",
+                phoneNumber: "1234567890",
+                role: "worker"
             });
 
 
@@ -112,7 +115,10 @@ describe("Auth Routes", () => {
 
             await User.create({
                 username: "zaid",
-                hashedPassword: "$2b$12$LQv3c1y8f5k7H5x..."
+                hashedPassword: "$2b$12$LQv3c1y8f5k7H5x...",
+                email: "zaid@example.com",
+                phoneNumber: "1234567890",
+                role: "worker"
             });
 
         });
