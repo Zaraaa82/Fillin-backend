@@ -36,7 +36,10 @@ describe("Auth Routes", () => {
                 .post("/auth/sign-up")
                 .send({
                     username: "zaid",
-                    password: "password123"
+                    password: "password123",
+                    email: "zaid@example.com",
+                    phoneNumber: "+97333333333",
+                    role: "worker",
                 });
 
 
@@ -61,8 +64,8 @@ describe("Auth Routes", () => {
                 username: "zaid",
                 hashedPassword: "hashedpassword",
                 email: "zaid@example.com",
-                phoneNumber: "1234567890",
-                role: "worker"
+                phoneNumber: "+97333333333",
+                role: "worker",
             });
 
 
@@ -70,7 +73,10 @@ describe("Auth Routes", () => {
                 .post("/auth/sign-up")
                 .send({
                     username: "zaid",
-                    password: "password123"
+                    password: "password123",
+                    email: "different@example.com",
+                    phoneNumber: "+97334444444",
+                    role: "worker",
                 });
 
 
@@ -79,7 +85,7 @@ describe("Auth Routes", () => {
 
 
             expect(response.body.message)
-                .toBe("Username already exists");
+                .toBe("Username, email, or phone number already exists.");
 
         });
 
