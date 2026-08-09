@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const validator = require('validator');
+const { reactivateWorkerIfSuspensionExpired } = require('../services/workerSuspensionService');
 
 async function signUp(req, res) {
   try {
@@ -117,7 +118,7 @@ async function signIn(req, res) {
 
 async function verifyUser(req, res) {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await reactivateWorkerIfSuspensionExpired(req.user._id);
 
     if (!user) {
       return res.status(404).json({
