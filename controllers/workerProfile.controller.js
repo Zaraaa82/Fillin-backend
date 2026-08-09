@@ -3,6 +3,12 @@ const User = require('../models/User');
 
 async function createWorkerProfile(req, res){
     try{
+        const existingWorkerProfile = await WorkerProfile.findOne({owner: req.user._id});
+        
+        if(existingWorkerProfile){
+            return res.status(409).json({message: 'Worker profile already exists'});
+        }
+
         const {fullName, imageURL, bio, skills, location} = req.body;
 
         const createdWorkerProfile = await WorkerProfile.create({
@@ -51,8 +57,11 @@ async function updateWorkerProfile(req, res){
     try{
         const { fullName, imageURL, bio, skills, location } = req.body;
 
-        const updatedWorkerProfile = await WorkerProfile.findByIdAndUpdate(
-            req.params.id,
+        const updatedWorkerProfile = await WorkerProfile.findOneAndUpdate(
+            {        
+                _id:req.params.id,
+                owner: req.user._id
+            },
             {
                 fullName,
                 imageURL,
