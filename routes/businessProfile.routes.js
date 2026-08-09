@@ -5,5 +5,6 @@ const businessProfileController = require('../controllers/businessProfile.contro
 
 router.post('/', verifyToken, isBusiness, businessProfileController.createBusinessProfile)
 router.get('/:id', businessProfileController.getBusinessProfile)
+router.put('/:id', verifyToken, isBusiness, businessProfileController.updateBusinessProfile)
 
 module.exports = router;
