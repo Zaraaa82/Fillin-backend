@@ -1,6 +1,8 @@
 const WorkerProfile = require('../models/WorkerProfile');
 const User = require('../models/User');
 
+const {calculateWorkerStatistics} = require("../services/profileStatisticsService");
+
 async function createWorkerProfile(req, res){
     try{
         const existingWorkerProfile = await WorkerProfile.findOne({owner: req.user._id});
@@ -43,8 +45,15 @@ async function getWorkerProfile(req, res){
         if(!foundWorkerProfile){
             return res.status(404).json({message: 'Worker profile not found'});
         }
+
+        const {completedShifts, avgRating, reliabilityPercentage} = await calculateWorkerStatistics(foundWorkerProfile._id);
         
-        res.status(200).json(foundWorkerProfile); 
+        res.status(200).json({
+            ...foundWorkerProfile.toObject(),
+            completedShifts,
+            avgRating,
+            reliabilityPercentage
+        }); 
         
     }catch(err){
         
