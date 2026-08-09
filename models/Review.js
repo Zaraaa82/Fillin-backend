@@ -6,13 +6,19 @@ const reviewSchema = new mongoose.Schema(
     {
         reviewer: {
             type: ObjectId,
-            ref: 'BusinessProfile',
+            ref: 'User',
             required: true
         },
         reviewee: {
             type: ObjectId,
-            ref: 'WorkerProfile',
-            required: true
+            ref: 'User',
+            required: true,
+            validate: {
+                validator: function (reviewee) {
+                    return !reviewee.equals(this.reviewer);
+                },
+                message: "Reviewer and reviewee cannot be the same user."
+            }
         },
         application: {
             type: ObjectId,
@@ -35,7 +41,7 @@ const reviewSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-reviewSchema.index({ application: 1 }, { unique: true });
+reviewSchema.index({ application: 1, reviewer: 1 }, { unique: true });
 
 const Review = mongoose.model("Review", reviewSchema);
 
