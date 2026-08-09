@@ -1,5 +1,6 @@
 const BusinessProfile = require('../models/BusinessProfile')
 const User = require('../models/User')
+const { calculateBusinessStatistics } = require('../services/profileStatisticsService')
 
 async function createBusinessProfile(req, res) {
     const { name, industry, imageURL, description, websiteURL } = req.body
@@ -34,4 +35,18 @@ async function createBusinessProfile(req, res) {
     }
 }
 
-module.exports = { createBusinessProfile }
+async function getBusinessProfile(req, res) {
+    try {
+        const foundBusinessProfile = await BusinessProfile.findById(req.params.id)
+        if (!foundBusinessProfile) return res.status(404).json({ message: 'Business Profile is Not Found' })
+
+        const { avgRating } = await calculateBusinessStatistics(foundBusinessProfile._id)
+
+        res.status(200).json({ ...foundBusinessProfile.toObject(), avgRating })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Internal Server Error' })
+    }
+}
+
+module.exports = { createBusinessProfile, getBusinessProfile }
