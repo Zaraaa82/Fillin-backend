@@ -4,12 +4,18 @@ const app = express() // creates a express application
 const dotenv = require("dotenv").config() //this allows me to use my .env values in this file
 const morgan = require('morgan')
 const cors = require('cors')
+const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
 
 // Routes Import
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
 const applicationRoutes = require('./routes/application.routes');
 const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
+const businessProfileRoutes = require('./routes/businessProfile.routes')
+const workerProfileController = require('./routes/workerProfile.routes');
+
+
+const shiftRoutes = require('./routes/shift.routes');
 
 
 // Middleware
@@ -21,12 +27,15 @@ app.use(
 app.use(express.json())
 app.use(morgan('dev'))
 
-
-
 // Routes
 app.use('/auth',authRoutes)
 app.use('/skills', skillRoutes)
 app.use('/applications', refreshShiftStatuses, applicationRoutes)
+app.use('/business-profiles', businessProfileRoutes)
+app.use('/worker-profiles', workerProfileController);
+
+
+app.use('/shifts', refreshShiftStatuses, shiftRoutes);
 
 
 
