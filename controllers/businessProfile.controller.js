@@ -35,6 +35,20 @@ async function createBusinessProfile(req, res) {
     }
 }
 
+async function getMyProfile(req, res) {
+    try {
+        const foundBusinessProfile = await BusinessProfile.findOne({owner: req.user._id});
+        if (!foundBusinessProfile) return res.status(404).json({ message: 'Business Profile is Not Found' })
+
+        const { avgRating } = await calculateBusinessStatistics(foundBusinessProfile._id);
+
+        res.status(200).json({ ...foundBusinessProfile.toObject(), avgRating })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ message: 'Internal Server Error' })
+    }
+}
+
 async function getBusinessProfile(req, res) {
     try {
         const foundBusinessProfile = await BusinessProfile.findById(req.params.id)
@@ -53,15 +67,17 @@ async function updateBusinessProfile(req, res) {
     const { name, industry, imageURL, description, websiteURL } = req.body
 
     try {
-        const foundBusinessProfile = await BusinessProfile.findById(req.params.id)
-        if (!foundBusinessProfile) return res.status(404).json({ message: 'Business Profile is Not Found' })
-
-        const updatedBusinessProfile = await BusinessProfile.findByIdAndUpdate(
-            req.params.id, {
+        const updatedBusinessProfile = await BusinessProfile.findOneAndUpdate(
+        { owner: req.user._id }, 
+        {
             name, industry, imageURL, description, websiteURL
         },
             { new: true, runValidators: true }
-        )
+        );
+
+        if (!updatedBusinessProfile) {
+            return res.status(404).json({message: 'Business Profile is Not Found'});
+        }
 
         res.status(200).json(updatedBusinessProfile)
     } catch (err) {
@@ -73,4 +89,4 @@ async function updateBusinessProfile(req, res) {
     }
 }
 
-module.exports = { createBusinessProfile, getBusinessProfile, updateBusinessProfile }
+module.exports = { createBusinessProfile, getBusinessProfile, updateBusinessProfile, getMyProfile }
