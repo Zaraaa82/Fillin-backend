@@ -8,6 +8,7 @@ const cors = require('cors')
 // Routes Import
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
+const businessProfileRoutes = require('./routes/businessProfile.routes')
 const workerProfileController = require('./routes/workerProfile.routes');
 
 
@@ -25,6 +26,7 @@ app.use(morgan('dev'))
 // Routes
 app.use('/auth',authRoutes)
 app.use('/skills', skillRoutes)
+app.use('/business-profiles', businessProfileRoutes)
 app.use('/worker-profiles', workerProfileController);
 
 
