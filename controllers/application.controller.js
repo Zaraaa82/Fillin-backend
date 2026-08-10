@@ -320,7 +320,7 @@ async function cancelAssignment(req, res){
         if (!application) {
             return res.status(404).json({message: 'Assignment not found or cannot be cancelled'});
         }
-        if(['in_progress', 'completed', 'cancelled'].includes(application.shift.status)){
+        if(['in-progress', 'completed', 'cancelled'].includes(application.shift.status)){
             return res.status(409).json({message: 'Assignment cannot be cancelled after the shift starts'});
         }
 
