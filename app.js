@@ -8,6 +8,8 @@ const cors = require('cors')
 // Routes Import
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
+const applicationRoutes = require('./routes/application.routes');
+const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
 
 
 // Middleware
@@ -24,6 +26,7 @@ app.use(morgan('dev'))
 // Routes
 app.use('/auth',authRoutes)
 app.use('/skills', skillRoutes)
+app.use('/applications', refreshShiftStatuses, applicationRoutes)
 
 
 
