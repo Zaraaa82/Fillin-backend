@@ -9,6 +9,7 @@ const cors = require('cors')
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
 const businessProfileRoutes = require('./routes/businessProfile.routes')
+const workerProfileController = require('./routes/workerProfile.routes');
 
 
 // Middleware
@@ -26,6 +27,7 @@ app.use(morgan('dev'))
 app.use('/auth',authRoutes)
 app.use('/skills', skillRoutes)
 app.use('/business-profiles', businessProfileRoutes)
+app.use('/worker-profiles', workerProfileController);
 
 
 
