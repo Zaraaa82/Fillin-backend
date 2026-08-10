@@ -10,7 +10,6 @@ const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
 const applicationRoutes = require('./routes/application.routes');
-const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
 const businessProfileRoutes = require('./routes/businessProfile.routes')
 const workerProfileController = require('./routes/workerProfile.routes');
 
