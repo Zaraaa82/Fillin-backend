@@ -40,7 +40,32 @@ async function getWorkerProfile(req, res){
     try{
         const foundWorkerProfile = await WorkerProfile.findById(
             req.params.id
-        ).populate('owner','username email phoneNumber status').populate('skills','_id name');
+        ).populate('owner','username email phoneNumber status').populate('skills', '_id name');
+
+        if(!foundWorkerProfile){
+            return res.status(404).json({message: 'Worker profile not found'});
+        }
+
+        const {completedShifts, avgRating, reliabilityPercentage} = await calculateWorkerStatistics(foundWorkerProfile._id);
+        
+        res.status(200).json({
+            ...foundWorkerProfile.toObject(),
+            completedShifts,
+            avgRating,
+            reliabilityPercentage
+        }); 
+        
+    }catch(err){
+        
+        console.log(err);
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+}
+async function getMyProfile(req, res){
+    try{
+        const foundWorkerProfile = await WorkerProfile.findOne(
+            {owner: req.user._id}
+        ).populate('skills', '_id name');
 
         if(!foundWorkerProfile){
             return res.status(404).json({message: 'Worker profile not found'});
@@ -67,8 +92,7 @@ async function updateWorkerProfile(req, res){
         const { fullName, imageURL, bio, skills, location } = req.body;
 
         const updatedWorkerProfile = await WorkerProfile.findOneAndUpdate(
-            {        
-                _id:req.params.id,
+            {   
                 owner: req.user._id
             },
             {
@@ -101,5 +125,6 @@ async function updateWorkerProfile(req, res){
 module.exports = {
     createWorkerProfile,
     getWorkerProfile,
-    updateWorkerProfile
+    updateWorkerProfile,
+    getMyProfile
 }
