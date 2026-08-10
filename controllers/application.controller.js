@@ -28,7 +28,8 @@ async function getShiftApplications(req, res){
                     select: "username email phoneNumber status"
                 },
                 {
-                    path: 'skills'
+                    path: 'skills',
+                    select: '_id name'
                 }
             ]
         }).populate({
@@ -38,7 +39,8 @@ async function getShiftApplications(req, res){
                     path: 'postedBy'
                 },
                 {
-                    path: 'requiredSkills'
+                    path: 'requiredSkills',
+                    select: '_id name'
                 }
             ]
         });
@@ -66,7 +68,8 @@ async function getMyApplications(req, res){
                     path: 'postedBy'
                 },
                 {
-                    path: 'requiredSkills'
+                    path: 'requiredSkills',
+                    select: '_id name'
                 }
             ]
         }).sort({ createdAt: -1 });
@@ -91,7 +94,8 @@ async function getApplicationById(req, res){
                     select: "username email phoneNumber status"
                 },
                 {
-                    path: 'skills'
+                    path: 'skills',
+                    select: '_id name'
                 }
             ]
         }).populate({
@@ -101,7 +105,8 @@ async function getApplicationById(req, res){
                     path: 'postedBy'
                 },
                 {
-                    path: 'requiredSkills'
+                    path: 'requiredSkills',
+                    select: '_id name'
                 }
             ]
         });
@@ -136,7 +141,8 @@ async function getBusinessApplications(req, res){
                     select: "username email phoneNumber status"
                 },
                 {
-                    path: 'skills'
+                    path: 'skills',
+                    select: '_id name'
                 }
             ]
         }).populate({
@@ -146,7 +152,8 @@ async function getBusinessApplications(req, res){
                     path: 'postedBy'
                 },
                 {
-                    path: 'requiredSkills'
+                    path: 'requiredSkills',
+                    select: '_id name'
                 }
             ]
         });

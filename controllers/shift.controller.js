@@ -4,7 +4,7 @@ const { addAvailableSpots } = require('../services/shiftService');
 
 async function getAllShifts(req, res){
     try{
-        const allShifts = await Shift.find({status: {$ne: 'cancelled'}}).populate('postedBy').populate('requiredSkills');
+        const allShifts = await Shift.find({status: {$ne: 'cancelled'}}).populate('postedBy').populate('requiredSkills', '_id name');
         const shifts = await addAvailableSpots(allShifts);
         return res.status(200).json(shifts);
 
@@ -20,7 +20,7 @@ async function getAllShifts(req, res){
  */
 async function getShiftById(req, res){
     try{
-        const foundShift = await Shift.findById(req.params.id).populate('postedBy').populate('requiredSkills');
+        const foundShift = await Shift.findById(req.params.id).populate('postedBy').populate('requiredSkills', '_id name');
         if(!foundShift){
             return res.status(404).json({message: 'Shift not found'});
         }
@@ -47,7 +47,7 @@ async function getShiftById(req, res){
  */
 async function getShiftsByBusiness(req, res){
     try{
-        const businessProfile = await BusinessProfile.findById(req.params.id).select("owner");
+        const businessProfile = await BusinessProfile.findById(req.params.id).select('owner');
 
         if(!businessProfile){
             return res.status(404).json({message: 'Business profile not found'});
@@ -62,7 +62,7 @@ async function getShiftsByBusiness(req, res){
             filter.status = {$ne: 'cancelled'};
         }
 
-        const allShifts = await Shift.find(filter).populate('postedBy').populate('requiredSkills');
+        const allShifts = await Shift.find(filter).populate('postedBy').populate('requiredSkills', '_id name');
 
         const shifts = await addAvailableSpots(allShifts);
 
@@ -76,7 +76,7 @@ async function getShiftsByBusiness(req, res){
 
 async function createShift(req, res){
     try{
-        const businessProfile = await BusinessProfile.findOne({_id: req.params.id, owner: req.user._id});
+        const businessProfile = await BusinessProfile.findOne({owner: req.user._id});
 
         if(!businessProfile){
             return res.status(404).json({message: 'Business profile not found'});
@@ -105,7 +105,8 @@ async function createShift(req, res){
             capacity, 
             applicationDeadline
        });
-        return res.status(201).json(createdShift);
+       await createShift.populate('requiredSkills', '_id name');
+       return res.status(201).json(createdShift);
 
     }catch(err){
         if (err.name === "ValidationError") {
@@ -144,7 +145,8 @@ async function updateShift(req, res){
             payAmount, 
             capacity, 
             applicationDeadline
-       }, {new: true, runValidators: true});
+       }, 
+       {new: true, runValidators: true}).populate('requiredSkills', '_id name');
 
         if (!updatedShift) {
             return res.status(404).json({message: 'Shift not found'});
