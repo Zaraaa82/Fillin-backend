@@ -174,15 +174,21 @@ async function applyToShift(req, res){
         
         const existingApplication = await Application.findOne({
             shift: requestedShift._id,
-            worker: worker._id
+            worker: worker._id,
         });
-        
-        if(existingApplication){
-            return res.status(409).json({message: 'You have already applied to this shift'})
-        }
 
         if(await hasAcceptedShiftConflict(worker._id, requestedShift)){
             return res.status(409).json({message: 'This shift conflicts with an accepted shift'});
+        }
+        
+        if(existingApplication){
+            if(existingApplication.status !== 'withdrawn'){
+                return res.status(409).json({message: 'You have already applied to this shift'})
+            }
+            existingApplication.status = 'pending';
+            await existingApplication.save();
+
+            return res.status(201).json(existingApplication);
         }
 
 
