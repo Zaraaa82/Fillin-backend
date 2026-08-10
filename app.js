@@ -10,6 +10,7 @@ const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
 const reviewRoutes = require('./routes/review.routes')
+const applicationRoutes = require('./routes/application.routes');
 const businessProfileRoutes = require('./routes/businessProfile.routes')
 const workerProfileController = require('./routes/workerProfile.routes');
 
@@ -30,6 +31,7 @@ app.use(morgan('dev'))
 app.use('/auth',authRoutes)
 app.use('/skills', skillRoutes)
 app.use('/reviews', reviewRoutes)
+app.use('/applications', refreshShiftStatuses, applicationRoutes)
 app.use('/business-profiles', businessProfileRoutes)
 app.use('/worker-profiles', workerProfileController);
 

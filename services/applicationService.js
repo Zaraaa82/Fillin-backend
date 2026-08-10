@@ -67,5 +67,6 @@ function addSkillMatchPercentages(applications) {
 module.exports = {
     doShiftsOverlap,
     hasAcceptedShiftConflict,
-    withdrawConflictingApplications
+    withdrawConflictingApplications,
+    addSkillMatchPercentages
 }

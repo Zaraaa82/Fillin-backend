@@ -19,4 +19,4 @@ async function isActiveWorker(req, res, next) {
   }
 }
 
-module.exports = { isActiveWorker };
+module.exports =  isActiveWorker ;
