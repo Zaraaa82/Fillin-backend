@@ -21,7 +21,7 @@ const applicationSchema = new mongoose.Schema({
     attendanceStatus: {
         type: String,
         enum: ['not-applicable', 'pending', 'attended', 'missed'],
-        default: 'not-yet'
+        default: 'not-applicable'
     },
     rejectionReason: {
         type: String,
