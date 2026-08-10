@@ -4,7 +4,7 @@ const { addAvailableSpots } = require('../services/shiftService');
 
 async function getAllShifts(req, res){
     try{
-        const allShifts = await Shift.find({status: {$ne: 'cancelled'}}).populate('postedBy').populate('requiredSkills');
+        const allShifts = await Shift.find({status: {$ne: 'cancelled'}}).populate('postedBy').populate('requiredSkills', '_id name');
         const shifts = await addAvailableSpots(allShifts);
         return res.status(200).json(shifts);
 
@@ -20,7 +20,7 @@ async function getAllShifts(req, res){
  */
 async function getShiftById(req, res){
     try{
-        const foundShift = await Shift.findById(req.params.id).populate('postedBy').populate('requiredSkills');
+        const foundShift = await Shift.findById(req.params.id).populate('postedBy').populate('requiredSkills', '_id name');
         if(!foundShift){
             return res.status(404).json({message: 'Shift not found'});
         }
@@ -62,7 +62,7 @@ async function getShiftsByBusiness(req, res){
             filter.status = {$ne: 'cancelled'};
         }
 
-        const allShifts = await Shift.find(filter).populate('postedBy').populate('requiredSkills');
+        const allShifts = await Shift.find(filter).populate('postedBy').populate('requiredSkills', '_id name');
 
         const shifts = await addAvailableSpots(allShifts);
 

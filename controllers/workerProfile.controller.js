@@ -40,7 +40,7 @@ async function getWorkerProfile(req, res){
     try{
         const foundWorkerProfile = await WorkerProfile.findById(
             req.params.id
-        ).populate('owner','username email phoneNumber status').populate('skills');
+        ).populate('owner','username email phoneNumber status').populate('skills','_id name');
 
         if(!foundWorkerProfile){
             return res.status(404).json({message: 'Worker profile not found'});
