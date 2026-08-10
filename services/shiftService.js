@@ -33,6 +33,20 @@ async function updateShiftStatuses(){
                 await shift.save();
             }
         }
+
+        // Change an open Shift to filled when all spots are taken.
+        if(
+            shift.status === 'open' &&
+            shift.startTime > now &&
+            shift.applicationDeadline > now
+        ){
+            const availableSpots = await calculateAvailableSpots(shift);
+            if(availableSpots === 0){
+                shift.status = 'filled';
+                await shift.save();
+            }
+        }
+
         // Change an open, filled, or closed Shift to in_progress when its start time arrives.
         if( ['open', 'filled', 'closed'].includes(shift.status) && shift.startTime <= now ){
             shift.status = 'in_progress';
