@@ -67,7 +67,7 @@ const shiftSchema = new mongoose.Schema({
     },
     status: {
     type: String,
-    enum: ['open', 'filled', 'cancelled', 'completed', 'closed ', 'in-progress'],
+    enum: ['open', 'filled', 'cancelled', 'completed', 'closed', 'in-progress'],
     default: 'open'
 },
 
