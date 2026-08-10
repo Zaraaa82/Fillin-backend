@@ -9,6 +9,8 @@ const refreshShiftStatuses = require('./middleware/refreshShiftStatuses');
 // Routes Import
 const authRoutes = require('./routes/auth.routes')
 const skillRoutes = require('./routes/skill.routes')
+
+
 const shiftRoutes = require('./routes/shift.routes');
 
 
@@ -21,11 +23,11 @@ app.use(
 app.use(express.json())
 app.use(morgan('dev'))
 
-
-
 // Routes
 app.use('/auth',authRoutes)
 app.use('/skills', skillRoutes)
+
+
 app.use('/shifts', refreshShiftStatuses, shiftRoutes);
 
 
