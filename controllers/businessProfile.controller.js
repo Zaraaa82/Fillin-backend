@@ -37,7 +37,7 @@ async function createBusinessProfile(req, res) {
 
 async function getMyProfile(req, res) {
     try {
-        const foundBusinessProfile = await BusinessProfile.findOne({owner: req.user._id});
+        const foundBusinessProfile = await BusinessProfile.findOne({owner: req.user._id}).populate('owner','username email phoneNumber status');;
         if (!foundBusinessProfile) return res.status(404).json({ message: 'Business Profile is Not Found' })
 
         const { avgRating } = await calculateBusinessStatistics(foundBusinessProfile._id);
@@ -51,7 +51,7 @@ async function getMyProfile(req, res) {
 
 async function getBusinessProfile(req, res) {
     try {
-        const foundBusinessProfile = await BusinessProfile.findById(req.params.id)
+        const foundBusinessProfile = await BusinessProfile.findById(req.params.id).populate('owner','username email phoneNumber status');
         if (!foundBusinessProfile) return res.status(404).json({ message: 'Business Profile is Not Found' })
 
         const { avgRating } = await calculateBusinessStatistics(foundBusinessProfile._id)
