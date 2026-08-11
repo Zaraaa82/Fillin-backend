@@ -105,7 +105,7 @@ async function createShift(req, res){
             capacity, 
             applicationDeadline
        });
-       await createShift.populate('requiredSkills', '_id name');
+       await createdShift.populate('requiredSkills', '_id name');
        return res.status(201).json(createdShift);
 
     }catch(err){
