@@ -1,43 +1,17 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
-const connectToDB = require("../config/db");
-const Skill = require("../models/Skill");
+const Skill = require('../models/Skill');
 
 const skillNames = [
-  "barista",
-  "cashier",
-  "catering",
-  "childcare",
-  "cleaning",
-  "cooking",
-  "customer service",
-  "data entry",
-  "delivery driving",
-  "dishwashing",
-  "event setup",
-  "forklift operation",
-  "housekeeping",
-  "landscaping",
-  "moving and labor",
-  "retail sales",
-  "security",
-  "serving",
-  "warehouse",
+  'customer service', 'food service', 'barista', 'cash handling',
+  'point of sale', 'event setup', 'guest reception', 'banquet service',
+  'inventory handling', 'merchandising', 'warehouse operations', 'packing',
+  'teamwork', 'time management', 'arabic communication', 'english communication',
+  'food safety', 'order picking', 'crowd guidance', 'ticket scanning',
+  'housekeeping', 'basic computer skills', 'product knowledge', 'delivery coordination',
 ];
 
 async function seedSkills() {
-  await connectToDB();
-
-  for (const name of skillNames) {
-    await Skill.findOneAndUpdate(
-      { name },
-      { name },
-      { upsert: true, new: true },
-    );
-  }
-
-  console.log(`Seeded ${skillNames.length} skills.`);
-  await mongoose.disconnect();
+  const skills = await Skill.insertMany(skillNames.map((name) => ({ name })));
+  return Object.fromEntries(skills.map((skill) => [skill.name, skill]));
 }
 
-seedSkills();
+module.exports = seedSkills;
