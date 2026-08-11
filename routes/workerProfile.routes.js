@@ -12,7 +12,7 @@ const validateObjectId = require('../middleware/validateObjectId');
 
 
 router.post('/', verifyToken, isWorker, createWorkerProfile);
-router.put('/', verifyToken, isWorker, validateObjectId, updateWorkerProfile)
+router.put('/', verifyToken, isWorker, updateWorkerProfile);
 router.get('/me', verifyToken, isWorker, getMyProfile);
 router.get('/:id', verifyToken, validateObjectId, getWorkerProfile);
 
