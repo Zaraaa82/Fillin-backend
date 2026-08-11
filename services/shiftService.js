@@ -47,14 +47,14 @@ async function updateShiftStatuses(){
             }
         }
 
-        // Change an open, filled, or closed Shift to in_progress when its start time arrives.
-        if( ['open', 'filled', 'closed'].includes(shift.status) && shift.startTime <= now ){
-            shift.status = 'in_progress';
+        // Change an open, filled, or closed Shift to in-progress when its start time arrives.
+        if (['open', 'filled', 'closed'].includes(shift.status) && shift.startTime <= now) {
+            shift.status = 'in-progress';
             await shift.save();
         }
 
-        // Change an in_progress Shift to completed when its end time passes.
-        if(shift.status === 'in_progress' && shift.endTime <= now){
+        // Change an in-progress Shift to completed when its end time passes.
+        if (shift.status === 'in-progress' && shift.endTime <= now) {
             shift.status = 'completed';
             await shift.save();
         }
