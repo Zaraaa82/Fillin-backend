@@ -4,7 +4,7 @@ const { addAvailableSpots } = require('../services/shiftService');
 
 async function getAllShifts(req, res){
     try{
-        const allShifts = await Shift.find({status: {$ne: 'cancelled'}}).populate('postedBy').populate('requiredSkills', '_id name');
+        const allShifts = await Shift.find({status: 'open'}).populate('postedBy').populate('requiredSkills', '_id name');
         const shifts = await addAvailableSpots(allShifts);
         return res.status(200).json(shifts);
 
