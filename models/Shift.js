@@ -33,12 +33,12 @@ const shiftSchema = new mongoose.Schema({
     endTime: {
         type: Date,
         required: true,
-        validate: {
-        validator: function (value) {
-            return value > this.startTime;
-        },
-        message: 'endTime must be later than startTime.'
-    }
+    //     validate: {
+    //     validator: function (value) {
+    //         return value > this.startTime;
+    //     },
+    //     message: 'endTime must be later than startTime.'
+    // }
 
     },
     location: {
@@ -58,12 +58,12 @@ const shiftSchema = new mongoose.Schema({
     applicationDeadline: {
         type: Date,
         required: true,
-        validate: {
-        validator: function (value) {
-            return value < this.startTime;
-        },
-        message: 'applicationDeadline must be before startTime.'
-    }
+        // validate: {
+        // validator: function (value) {
+        //     return value < this.startTime;
+        // },
+        // message: 'applicationDeadline must be before startTime.'
+    // }
     },
     status: {
     type: String,
